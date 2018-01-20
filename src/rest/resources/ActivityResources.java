@@ -16,6 +16,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.UriInfo;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.recombee.api_client.exceptions.ApiException;
 
 import rest.activity.ActivityRecommendation;
@@ -64,6 +65,13 @@ public class ActivityResources {
 		String id = Users.getUserID(firstname, lastname, email, birthyear);
 		return id;
 	}
+	 public static String format(String jsonString) throws IOException {
+		 ObjectMapper mapper = new ObjectMapper();
+		 Object json = mapper.readValue(jsonString, Object.class);
+		 String prettyJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
+
+	      return prettyJson;
+	  }
 	
 	@GET
 	@Produces({MediaType.APPLICATION_JSON})
@@ -73,7 +81,7 @@ public class ActivityResources {
 		System.out.println("--> URI = "+uriInfo);
 		System.out.println("--> request = "+request);
 		String recommendations = ActivityRecommendation.recommendActivities(userId, city);
-		return recommendations;
+		return format(recommendations);
 	}
 	@POST
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
