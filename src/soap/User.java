@@ -27,18 +27,6 @@ public interface User {
 
     /**
      * 
-     * @return
-     *     returns java.util.List<java.lang.String>
-     */
-    @WebMethod
-    @WebResult(name = "userList", targetNamespace = "")
-    @RequestWrapper(localName = "listUsers", targetNamespace = "http://soap/", className = "soap.ListUsers")
-    @ResponseWrapper(localName = "listUsersResponse", targetNamespace = "http://soap/", className = "soap.ListUsersResponse")
-    @Action(input = "http://soap/User/listUsersRequest", output = "http://soap/User/listUsersResponse")
-    public List<String> listUsers();
-
-    /**
-     * 
      * @param arg3
      * @param arg2
      * @param arg1
@@ -60,5 +48,17 @@ public interface User {
         String arg2,
         @WebParam(name = "arg3", targetNamespace = "")
         String arg3);
+
+    /**
+     * 
+     * @return
+     *     returns java.util.List<java.lang.String>
+     */
+    @WebMethod
+    @WebResult(name = "userList", targetNamespace = "")
+    @RequestWrapper(localName = "listUsers", targetNamespace = "http://soap/", className = "soap.ListUsers")
+    @ResponseWrapper(localName = "listUsersResponse", targetNamespace = "http://soap/", className = "soap.ListUsersResponse")
+    @Action(input = "http://soap/User/listUsersRequest", output = "http://soap/User/listUsersResponse")
+    public List<String> listUsers();
 
 }
