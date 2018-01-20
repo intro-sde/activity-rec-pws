@@ -8,10 +8,10 @@ Retrieving from TheySaidSo API:
 
 The following operations for the https://sde-activity-rec-pws.herokuapp.com/process endpoint are available in this service:
 
-- /quotes @GET | [] | Returns a list of sport related random quotes from external API.
+- /quotes @GET | [] | Returns a sport related random quote from external API.
 - /user/registration @POST | [firstname, lastname, email, birthyear] | Saves input data if new user.
 - /user/id @GET | [firstname, lastname, email, birthyear] | Returns id of given user.
-- /recommendation @GET | [userId, type, city] | Get 5 recommended items.
+- /recommendation @GET | [userId, city] | Get 5 recommended activities.
 - /feedback @POST | [itemId, userId, rating] | Saves item as user preference and adds rating.
 
 Reference:

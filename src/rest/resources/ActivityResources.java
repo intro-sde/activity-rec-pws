@@ -44,7 +44,7 @@ public class ActivityResources {
 		return quote;
 	}
 	@POST
-	@Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
+	@Produces({MediaType.TEXT_PLAIN})
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Path("/user/registration")
 	public String register(@QueryParam("firstname") String firstname, @QueryParam("lastname") String lastname, @QueryParam("email") String email,@QueryParam("birthyear") String birthyear) throws ApiException, IOException {
@@ -55,7 +55,7 @@ public class ActivityResources {
 		return result;
 	}
 	@GET
-	@Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
+	@Produces({MediaType.TEXT_PLAIN})
 	@Path("/user/id")
 	public String getUserId(@QueryParam("firstname") String firstname, @QueryParam("lastname") String lastname, @QueryParam("email") String email,@QueryParam("birthyear") String birthyear) throws ApiException, IOException {
 		System.out.println("--> ActivityResource request...");
@@ -66,18 +66,18 @@ public class ActivityResources {
 	}
 	
 	@GET
-	@Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
+	@Produces({MediaType.APPLICATION_JSON})
 	@Path("/recommendation")
-	public List<String> getRecommendation(@QueryParam("userId") String userId, @QueryParam("type") String type, @QueryParam("city") String city) throws ApiException, IOException {
+	public String getRecommendation(@QueryParam("userId") String userId, @QueryParam("city") String city) throws ApiException, IOException {
 		System.out.println("--> ActivityResource request...");
 		System.out.println("--> URI = "+uriInfo);
 		System.out.println("--> request = "+request);
-		List<String> recommendations = ActivityRecommendation.recommendActivities(userId, city, type);
+		String recommendations = ActivityRecommendation.recommendActivities(userId, city);
 		return recommendations;
 	}
 	@POST
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
+	@Produces({MediaType.TEXT_PLAIN})
 	@Path("/feedback")
 	public String getFeedback(@QueryParam("itemId") String itemId, @QueryParam("userId") String userId, @QueryParam("rating") String rating) throws ApiException, IOException {
 		System.out.println("--> ActivityResource request...");
