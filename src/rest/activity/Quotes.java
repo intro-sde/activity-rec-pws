@@ -1,57 +1,48 @@
 package rest.activity;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.LinkedList;
-import java.util.List;
+import java.net.URI;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
+
+import org.glassfish.jersey.client.ClientConfig;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class Quotes {
-	public static List<String> getRandomQuotes() {
+	public static WebTarget config() {
+		ClientConfig clientConfig = new ClientConfig();
+		Client client = ClientBuilder.newClient(clientConfig);
+		WebTarget service = client.target(getBaseURI());
+		System.out.println("Calling " + getBaseURI() ); 
+		return service;
+	}
+	private static URI getBaseURI() {
+		return UriBuilder.fromUri(
+				"https://quotes.rest").build();
+	}
+	public static String getRandomQuotes() throws Exception {
 		String category = "sports";
-		String result="Quotes";
-
-		String uri ="https://quotes.rest/qod?category="+category;
-
-		URL url;
-		List<String> list = new LinkedList<>();
-		try {
-			url = new URL(uri);
-
-			HttpURLConnection connection =
-					(HttpURLConnection) url.openConnection();
-			connection.setRequestMethod("GET");
-			connection.setRequestProperty("Accept", "application/json");
-
-
-			BufferedReader in = new BufferedReader
-					(new InputStreamReader(connection.getInputStream()));
-			String inputLine=null;
-
-			while ((inputLine = in.readLine()) != null) {
-
-				list.add(inputLine);
-
-
-
-			}
-
-
-			in.close();
-
-
-			connection.disconnect();
+		String result="Sports do not build character. They reveal it. (Heywood Broun)";
+		WebTarget service = config();
+		Response resp = service.path("/qod").queryParam("category", category).request().accept(MediaType.APPLICATION_JSON).get();
+		String response = resp.readEntity(String.class);
+		//System.out.println(response);
+		JSONObject obj = new JSONObject(response);
+		JSONObject contents = (JSONObject) obj.get("contents");
+		JSONArray quotes = contents.getJSONArray("quotes");
+		String quote = quotes.getJSONObject(0).getString("quote");
+		String author = quotes.getJSONObject(0).getString("author");
+		System.out.println(quote);
+	
+		if (quote!=null) {
+			result = quote + " (" + author + ")";
 		}
-		catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
-		} 
-		return list;
+
+		return result;
 	}
 }

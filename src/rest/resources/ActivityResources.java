@@ -34,14 +34,14 @@ public class ActivityResources {
 	Request request;
 	
 	@GET
-	@Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
+	@Produces({MediaType.TEXT_PLAIN})
 	@Path("/quotes")
-	public List<String> getQuote() throws ApiException, IOException {
+	public String getQuote() throws Exception {
 		System.out.println("--> ActivityResource request...");
 		System.out.println("--> URI = "+uriInfo);
 		System.out.println("--> request = "+request);
-		List<String> quotes = Quotes.getRandomQuotes();
-		return quotes;
+		String quote = Quotes.getRandomQuotes();
+		return quote;
 	}
 	@POST
 	@Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
